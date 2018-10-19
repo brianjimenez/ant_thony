@@ -14,13 +14,13 @@ logging.basicConfig(format='[Ant-Thony] %(levelname)s: %(message)s', level=loggi
 class Task(object):
     """A task class"""
     def __init__(self, command, path="."):
-    	self.command = command
-    	self.path = path
+        self.command = command
+        self.path = path
 
     def run(self):
         """Runs a command in the given path"""
-    	os.chdir(self.path)
-    	os.system(self.command)
+        os.chdir(self.path)
+        os.system(self.command)
 
 
 class Ant(Process):
@@ -33,7 +33,7 @@ class Ant(Process):
     def run(self):
         """Runs all the assigned tasks"""
         for task in self.tasks:
-        	task.run()
+            task.run()
         logging.info("{} going back to the nest".format(self.name))
 
 
@@ -77,18 +77,18 @@ class Ant_Thony(object):
 
 if __name__ == "__main__":
 
-	parser = argparse.ArgumentParser(prog='ant_thony')
-	parser.add_argument("tasks_file_name", help="A file containing a task for each line", metavar="tasks_file_name")
-	parser.add_argument("--cores", "-cores", "-c", help="CPU cores to use", dest="cores", type=int, default=0)
+    parser = argparse.ArgumentParser(prog='ant_thony')
+    parser.add_argument("tasks_file_name", help="A file containing a task for each line", metavar="tasks_file_name")
+    parser.add_argument("--cores", "-cores", "-c", help="CPU cores to use", dest="cores", type=int, default=0)
 
-	args = parser.parse_args()
+    args = parser.parse_args()
 
-	with open(args.tasks_file_name) as handle:
-		tasks = []
-		for line in handle:
-			if line and not line.startswith("#"):
-				tasks.append(Task(line.rstrip(os.linesep)))
+    with open(args.tasks_file_name) as handle:
+        tasks = []
+        for line in handle:
+            if line and not line.startswith("#"):
+                tasks.append(Task(line.rstrip(os.linesep)))
 
-		anthony = Ant_Thony(tasks, args.cores)
-		anthony.release()
-		anthony.go_home()
+        anthony = Ant_Thony(tasks, args.cores)
+        anthony.release()
+        anthony.go_home()
